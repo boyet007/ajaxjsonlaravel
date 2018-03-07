@@ -1,4 +1,7 @@
 <?php
+use App\Category;
+use App\Subcategory;
+use Illuminate\Support\Facades\Input;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,5 +15,13 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $categories = Category::all();
+    return view('index')->with('categories', $categories);
+});
+
+Route::get('/ajax-subcat', function(){
+    $cat_id = Input::get('cat_id');
+    $subcategories = Subcategory::where('category_id', '=', $cat_id)->get();
+
+    return Response::json($subcategories);
 });
